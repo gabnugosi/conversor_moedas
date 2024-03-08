@@ -15,15 +15,4 @@ class MyApp extends StatelessWidget {
       home: ConversorMoedaPageState(),
     );
   }
-  //
-  //TODO: trecho para teste -> remover
-  /*
-   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Placeholder(),
-    );
-  }
-*/
 }

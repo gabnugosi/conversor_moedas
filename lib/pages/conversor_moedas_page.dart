@@ -28,7 +28,43 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
         backgroundColor: Colors.amber,
         centerTitle: true,
         title: const Text('\$ Conversor de moedas \$'),
-      ), /*body: ,*/
+      ),
+      body: FutureBuilder<Map>(
+        future: getData(),
+        builder: (context, snapShot) {
+          switch (snapShot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.waiting:
+               return const Center(
+                child: Text(
+                  "Carregando dados...",
+                  style: TextStyle(
+                    color: Colors.amber,
+                    fontSize: 25,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            default: 
+              if (snapShot.hasError) {
+                const Center(
+                  child: Text(
+                    "Erro ao carregar dados...",
+                    style: TextStyle(
+                      color: Colors.amber,
+                      fontSize: 25,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              } else{
+                return Container(color: Colors.green);
+              }
+          }
+          throw Exception('Erro ao rodar o switch LOL');
+          //TODO: Para a aula 131 olhar o código do themeData da aula 130
+        },
+      ),
     );
   }
 }
