@@ -19,6 +19,9 @@ class ConversorMoedaPageState extends StatefulWidget {
 }
 
 class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
+  double? dolar;
+  double? euro;
+
   @override
   Widget build(BuildContext context) {
     getData();
@@ -35,7 +38,7 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
           switch (snapShot.connectionState) {
             case ConnectionState.none:
             case ConnectionState.waiting:
-               return const Center(
+              return const Center(
                 child: Text(
                   "Carregando dados...",
                   style: TextStyle(
@@ -45,7 +48,7 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
                   textAlign: TextAlign.center,
                 ),
               );
-            default: 
+            default:
               if (snapShot.hasError) {
                 const Center(
                   child: Text(
@@ -57,12 +60,54 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
                     textAlign: TextAlign.center,
                   ),
                 );
-              } else{
-                return Container(color: Colors.green);
+              } else {
+                dolar = snapShot.data?["results"]["currencies"]["USD"]["buy"];
+                euro = snapShot.data?["results"]["currencies"]["EUR"]["buy"];
+                return const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        Icon(Icons.monetization_on,
+                            size: 150.0, color: Colors.amber),
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Reais',
+                            labelStyle: TextStyle(color: Colors.amber),
+                            border: OutlineInputBorder(),
+                            prefixText: "R\$",
+                          ),
+                          style: TextStyle(color: Colors.amber),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Dólar',
+                            labelStyle: TextStyle(color: Colors.amber),
+                            border: OutlineInputBorder(),
+                            prefixText: "US\$",
+                          ),
+                          style: TextStyle(color: Colors.amber),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: 'Euro',
+                            labelStyle: TextStyle(color: Colors.amber),
+                            border: OutlineInputBorder(),
+                            prefixText: "€",
+                          ),
+                          style: TextStyle(color: Colors.amber),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+                //return Container(color: Colors.green);
               }
           }
           throw Exception('Erro ao rodar o switch LOL');
-          //TODO: Para a aula 131 olhar o código do themeData da aula 130
         },
       ),
     );
