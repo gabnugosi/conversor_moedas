@@ -144,6 +144,7 @@ Widget buildTextField(String label, String prefix,
     ),
     style: const TextStyle(color: Colors.amber),
     onChanged: coinFunction,
-    keyboardType: TextInputType.number,
+    //keyboardType: TextInputType.number, // exibir os decimais para Android
+    keyboardType: const TextInputType.numberWithOptions(decimal: true),//exibir os decimais para IOS/Android
   );
 }
