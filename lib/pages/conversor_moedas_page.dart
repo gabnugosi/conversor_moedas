@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +22,22 @@ class ConversorMoedaPageState extends StatefulWidget {
 class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
   double? dolar;
   double? euro;
+
+  final realController = TextEditingController();
+  final dolarController = TextEditingController();
+  final euroController = TextEditingController();
+
+  void _realChanged(String text) {
+    log(text);
+  }
+
+  void _dolarChanged(String text) {
+    log(text);
+  }
+
+  void _euroChanged(String text) {
+    log(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,48 +80,26 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
               } else {
                 dolar = snapShot.data?["results"]["currencies"]["USD"]["buy"];
                 euro = snapShot.data?["results"]["currencies"]["EUR"]["buy"];
-                return const Padding(
-                  padding: EdgeInsets.all(10.0),
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Icon(Icons.monetization_on,
+                        const Icon(Icons.monetization_on,
                             size: 150.0, color: Colors.amber),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Reais',
-                            labelStyle: TextStyle(color: Colors.amber),
-                            border: OutlineInputBorder(),
-                            prefixText: "R\$",
-                          ),
-                          style: TextStyle(color: Colors.amber),
-                        ),
-                        Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Dólar',
-                            labelStyle: TextStyle(color: Colors.amber),
-                            border: OutlineInputBorder(),
-                            prefixText: "US\$",
-                          ),
-                          style: TextStyle(color: Colors.amber),
-                        ),
-                        Divider(),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Euro',
-                            labelStyle: TextStyle(color: Colors.amber),
-                            border: OutlineInputBorder(),
-                            prefixText: "€",
-                          ),
-                          style: TextStyle(color: Colors.amber),
-                        ),
+                        buildTextField(
+                            "Reais", "R\$", realController, _realChanged),
+                        const Divider(),
+                        buildTextField(
+                            "Dólar", "US\$", dolarController, _dolarChanged),
+                        const Divider(),
+                        buildTextField(
+                            "Euros", '€', euroController, _euroChanged),
                       ],
                     ),
                   ),
                 );
-                //return Container(color: Colors.green);
               }
           }
           throw Exception('Erro ao rodar o switch LOL');
@@ -112,4 +107,20 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
       ),
     );
   }
+}
+
+Widget buildTextField(String label, String prefix,
+    TextEditingController coinController, Function(String) coinFunction) {
+  return TextField(
+    controller: coinController,
+    decoration: InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Colors.amber),
+      border: const OutlineInputBorder(),
+      prefixText: prefix,
+    ),
+    style: const TextStyle(color: Colors.amber),
+    onChanged: coinFunction,
+    keyboardType: TextInputType.number,
+  );
 }
