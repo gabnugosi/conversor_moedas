@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -28,15 +27,21 @@ class _ConversorMoedaPageStateState extends State<ConversorMoedaPageState> {
   final euroController = TextEditingController();
 
   void _realChanged(String text) {
-    log(text);
+    double real = double.parse(text);
+    dolarController.text = (real/dolar!).toStringAsFixed(2); 
+    euroController.text = (real/euro!).toStringAsFixed(2);
   }
 
   void _dolarChanged(String text) {
-    log(text);
+    double dolar = double.parse(text);
+    realController.text = (dolar * this.dolar!).toStringAsFixed(2);
+    euroController.text = (dolar* this.dolar!/euro!).toStringAsFixed(2);
   }
 
   void _euroChanged(String text) {
-    log(text);
+    double euro = double.parse(text);
+    realController.text = (euro * this.euro!).toStringAsFixed(2);
+    dolarController.text = (euro * this.euro!/dolar!).toStringAsFixed(2);
   }
 
   @override
